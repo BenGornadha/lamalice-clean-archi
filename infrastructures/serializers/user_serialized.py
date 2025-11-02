@@ -1,6 +1,7 @@
-from pydantic import BaseModel
+from dataclasses import dataclass
 
-class UserSerialized(BaseModel):
+@dataclass
+class UserSerialized:
     uuid: str
     email: str
     registered_at: str

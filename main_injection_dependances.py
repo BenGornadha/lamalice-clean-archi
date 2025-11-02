@@ -41,9 +41,7 @@ def run_register(
 ) -> UUID:
     user = use_case.execute(web_input)
     fetched = user_repo.get(user)
-
     assert fetched.uuid == user.uuid
-
     return user.uuid
 
 
@@ -59,3 +57,5 @@ def main() -> None:
     user_id = run_register(data)
     print(f"Utilisateur créé avec l'UUID: {user_id}")
 
+if __name__ == "__main__":
+    main()

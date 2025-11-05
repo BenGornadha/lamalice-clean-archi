@@ -1,5 +1,3 @@
-from uuid import UUID
-
 from domain.entities.user import User, NotFoundUser
 from domain.exceptions.user import UserNotFoundError
 from domain.value_objects.email import Email

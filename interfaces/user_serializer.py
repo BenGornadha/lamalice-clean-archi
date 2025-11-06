@@ -10,5 +10,6 @@ class UserSerializer(ABC):
     def serialize(self, user: UserRegistered) :
         raise NotImplementedError
 
+    @abstractmethod
     def deserialize(self, serialized_user : UserSerialized) -> UserRegistered:
         raise  NotImplementedError

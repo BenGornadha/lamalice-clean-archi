@@ -1,4 +1,4 @@
-from domain.entities.user import User, NotFoundUser
+from domain.entities.user import UserRegistered, NotFoundUser
 from domain.exceptions.user import UserNotFoundError
 from domain.value_objects.email import Email
 from infrastructures.serializers.user_serialized import UserSerialized
@@ -12,11 +12,11 @@ class InMemoryUserRepository(UserRepository):
         self._db: dict[Email, UserSerialized] = {}
         self._user_serializer = user_serializer
 
-    def save(self, user: User) -> None:
+    def save(self, user: UserRegistered) -> None:
         serialized_user = self._user_serializer.serialize(user)
         self._db[user.email] = serialized_user
 
-    def get(self, user: User) -> User | NotFoundUser:
+    def get(self, user: UserRegistered) -> UserRegistered | NotFoundUser:
         result_user = self._db.get(user.email,NotFoundUser())
         if NotFoundUser() == result_user:
             raise UserNotFoundError(user_id=user.uuid)

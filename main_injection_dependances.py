@@ -2,9 +2,11 @@ from dependency_injector import containers, providers
 from dependency_injector.wiring import inject, Provide
 from uuid import UUID
 
-from application.dto.website_input import RegisterUserInput
 from application.register_user import RegisterUserUseCase
+from domain.entities.user import UserInput, UserRegistered
+from domain.services.user_password_validator import UserPasswordValidator
 from domain.services.user_validator import UserValidator
+from infrastructures.hashers.hashers import BcryptPasswordHasher
 from infrastructures.persistence.user_repository import InMemoryUserRepository
 from infrastructures.serializers.user_serializer import UserJsonSerializer
 from interfaces.user_repository import UserRepository
@@ -21,28 +23,37 @@ class Container(containers.DeclarativeContainer):
         user_serializer=serializer
     )
 
+    password_validator = providers.Singleton(UserPasswordValidator,
+    )
+
     validator = providers.Singleton(
         UserValidator,
-        repository=repository
+        repository=repository,
+        password_validator=password_validator
+    )
+
+    password_hasher = providers.Singleton(
+        BcryptPasswordHasher
     )
 
     register_user_usecase = providers.Singleton(
         RegisterUserUseCase,
         validator=validator,
-        repository=repository
+        repository=repository,
+        password_hasher=password_hasher
     )
 
 
 @inject
 def run_register(
-    web_input: RegisterUserInput,
+    web_input: UserInput,
     use_case: RegisterUserUseCase = Provide[Container.register_user_usecase],
     user_repo: UserRepository = Provide[Container.repository]
-) -> UUID:
-    user = use_case.execute(web_input)
+) -> UserRegistered:
+    user = use_case.execute(input=web_input)
     fetched = user_repo.get(user)
     assert fetched.uuid == user.uuid
-    return user.uuid
+    return user
 
 
 def main() -> None:
@@ -51,11 +62,14 @@ def main() -> None:
     container.wire(modules=[__name__])
 
     # Création des données d'entrée
-    data = RegisterUserInput("demo@example.com", "StrongPass1")
+    data = UserInput("demo@example.com", "Strong@Pass1")
 
     # Exécution du cas d'utilisation
-    user_id = run_register(data)
-    print(f"Utilisateur créé avec l'UUID: {user_id}")
+    user = run_register(data)
+    print(f"Utilisateur créé avec l'UUID: {user.uuid}")
+    print(f"Utilisateur créé avec l'email: {user.email}")
+    print(f"Utilisateur créé avec le password: {user.password_hash}")
+    print(f"Utilisateur créé à: {user.registered_at}")
 
 if __name__ == "__main__":
     main()

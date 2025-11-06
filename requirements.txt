@@ -2,3 +2,4 @@ annotated-types==0.7.0
 dependency-injector==4.48.2
 typing-inspection==0.4.2
 typing_extensions==4.15.0
+bcrypt==5.0.0

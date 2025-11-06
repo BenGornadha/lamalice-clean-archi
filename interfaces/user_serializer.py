@@ -1,14 +1,14 @@
 from abc import ABC, abstractmethod
 
-from domain.entities.user import User
+from domain.entities.user import UserRegistered
 from infrastructures.serializers.user_serialized import UserSerialized
 
 
 class UserSerializer(ABC):
 
     @abstractmethod
-    def serialize(self, user: User) :
+    def serialize(self, user: UserRegistered) :
         raise NotImplementedError
 
-    def deserialize(self, serialized_user : UserSerialized) -> User:
+    def deserialize(self, serialized_user : UserSerialized) -> UserRegistered:
         raise  NotImplementedError

@@ -1,7 +1,7 @@
 from typing import Any
 import logging
 
-from domain.entities.user import User, NotFoundUser
+from domain.entities.user import UserRegistered, NotFoundUser
 from domain.exceptions.user import UserNotFoundError
 from domain.value_objects.email import Email
 from interfaces.user_repository import UserRepository
@@ -19,12 +19,12 @@ class BigQueryUserRepository(UserRepository):
         self._table = table
         self._user_serializer = user_serializer
 
-    def save(self, user: User) -> None:
+    def save(self, user: UserRegistered) -> None:
         serialized = self._user_serializer.serialize(user)
         table_ref = f"{self._dataset}.{self._table}"
         self._client.insert_rows_json(table_ref, [serialized])
 
-    def get(self, user: User) -> User:
+    def get(self, user: UserRegistered) -> UserRegistered:
         rows = self._query(user)
         if not rows:
             raise UserNotFoundError(user_id=user.uuid)
@@ -41,7 +41,7 @@ class BigQueryUserRepository(UserRepository):
         result = self._client.query(sql, params={"email": str(email)})
         return len(list(result)) > 0
 
-    def _query(self, user: User) -> list[dict]:
+    def _query(self, user: UserRegistered) -> list[dict]:
         sql = f"SELECT uuid, email, registered_at FROM `{self._dataset}.{self._table}` WHERE email = @email LIMIT 1"
         params = {"email": str(user.email)}
         result = self._client.query(sql, params=params)

@@ -1,7 +1,8 @@
 import datetime
 from uuid import uuid4
 
-from domain.entities.user import UserRegistered, UserInput
+from domain.entities.user import UserRegistered
+from presentation.input.user_input import UserInput
 from domain.services.user_validator import UserValidator
 from domain.value_objects.email import Email
 from interfaces.password_hasher import PasswordHasherInterface

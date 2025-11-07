@@ -3,7 +3,8 @@ from dependency_injector.wiring import inject, Provide
 from uuid import UUID
 
 from application.register_user import RegisterUserUseCase
-from domain.entities.user import UserInput, UserRegistered
+from domain.entities.user import UserRegistered
+from presentation.input.user_input import UserInput
 from domain.services.user_password_validator import UserPasswordValidator
 from domain.services.user_validator import UserValidator
 from infrastructures.hashers.hashers import BcryptPasswordHasher

@@ -4,10 +4,6 @@ from typing import Any
 from uuid import UUID
 from domain.value_objects.email import Email
 
-@dataclasses.dataclass(frozen=True)
-class UserInput:
-    email: str
-    password: str
 
 @dataclasses.dataclass(frozen=True)
 class UserRegistered:

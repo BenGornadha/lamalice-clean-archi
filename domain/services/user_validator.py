@@ -1,4 +1,4 @@
-from domain.entities.user import UserInput
+from presentation.input.user_input import UserInput
 from domain.value_objects.email import Email
 from interfaces.user_repository import UserRepository
 from interfaces.validator.validator import PasswordValidatorInterface, ValidatorInterface

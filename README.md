@@ -2,6 +2,9 @@
 
 Ce projet est un exemple d'implémentation de Clean Architecture en Python, comprenant l'injection de dépendances.
 
+image de la Clean Architecture
+![Clean Architecture](./CleanArchitecture.jpg)
+
 ## Structure du Projet
 
 ```

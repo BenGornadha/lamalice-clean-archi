@@ -1,6 +1,5 @@
 from dependency_injector import containers, providers
 from dependency_injector.wiring import inject, Provide
-from uuid import UUID
 
 from application.register_user import RegisterUserUseCase
 from domain.entities.user import UserRegistered

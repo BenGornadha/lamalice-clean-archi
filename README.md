@@ -10,6 +10,7 @@ Ce projet est un exemple d'implémentation de Clean Architecture en Python, comp
 ├── domain/              # Règles métier et entités
 ├── infrastructures/     # Implémentations concrètes
 └── interfaces/          # Interfaces et contrats
+└── presentation/         # API, monde extérieur, 
 ```
 
 ## Fonctionnalités
